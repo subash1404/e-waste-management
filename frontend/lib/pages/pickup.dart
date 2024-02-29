@@ -1,27 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        // enable Material 3
-        useMaterial3: true,
-        primarySwatch: Colors.indigo,
-      ),
-      home: const PickupPage(),
-    );
-  }
-}
-
 class PickupPage extends StatefulWidget {
   const PickupPage({Key? key}) : super(key: key);
 
@@ -49,6 +28,7 @@ class _PickupPageState extends State<PickupPage> {
   ];
 
   List<String> selectedItems = [];
+  bool selectingItems = true;
 
   @override
   void dispose() {
@@ -74,6 +54,7 @@ class _PickupPageState extends State<PickupPage> {
     if (results != null) {
       setState(() {
         selectedItems = results;
+        selectingItems = false;
       });
     }
   }
@@ -93,7 +74,7 @@ class _PickupPageState extends State<PickupPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                "Product Name",
+                "Title",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 4),
@@ -101,7 +82,7 @@ class _PickupPageState extends State<PickupPage> {
                 controller: _productNameController,
                 focusNode: _productNameFocusNode,
                 decoration: InputDecoration(
-                  hintText: "Enter product name",
+                  hintText: "Enter Title",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -139,13 +120,39 @@ class _PickupPageState extends State<PickupPage> {
               ),
               const SizedBox(height: 16),
               const Text(
-                "Description",
+                "List of Products",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
-              const SizedBox(height: 4),
-              ElevatedButton(
-                onPressed: _showMultiSelect,
-                child: const Text("Select Items"),
+              Container(
+                height: 56,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: Text(
+                          selectingItems
+                              ? "Select Items"
+                              : selectedItems.join(", "),
+                          style: TextStyle(
+                            color: selectingItems ? Colors.grey : Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (selectingItems)
+                      IconButton(
+                        onPressed: _showMultiSelect,
+                        icon: Icon(Icons.arrow_drop_down),
+                      ),
+                  ],
+                ),
               ),
               const SizedBox(height: 16),
               const Text(
@@ -174,31 +181,6 @@ class _PickupPageState extends State<PickupPage> {
               ElevatedButton(
                 onPressed: () {
                   // Submit action
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Selected Items'),
-                        content: SingleChildScrollView(
-                          child: ListBody(
-                            children: selectedItems
-                                .map(
-                                  (item) => Text(item),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Close'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
                 },
                 child: const Text(
                   "Submit",
@@ -254,16 +236,18 @@ class _MultiSelectState extends State<MultiSelect> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Select Topics'),
+      title: const Text('Select Items'),
       content: SingleChildScrollView(
         child: ListBody(
           children: widget.items
-              .map((item) => CheckboxListTile(
-                    value: _selectedItems.contains(item),
-                    title: Text(item),
-                    controlAffinity: ListTileControlAffinity.leading,
-                    onChanged: (isChecked) => _itemChange(item, isChecked!),
-                  ))
+              .map(
+                (item) => CheckboxListTile(
+                  value: _selectedItems.contains(item),
+                  title: Text(item),
+                  controlAffinity: ListTileControlAffinity.leading,
+                  onChanged: (isChecked) => _itemChange(item, isChecked!),
+                ),
+              )
               .toList(),
         ),
       ),
@@ -274,7 +258,7 @@ class _MultiSelectState extends State<MultiSelect> {
         ),
         ElevatedButton(
           onPressed: _submit,
-          child: const Text('Submit'),
+          child: const Text('Ok'),
         ),
       ],
     );
