@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'home.dart';
+import 'nav.dart';
 import 'package:flutter/material.dart'; // Import for Timer
 
 class SplashPage extends StatefulWidget {
@@ -18,7 +18,7 @@ class _SplashPageState extends State<SplashPage> {
     Timer(Duration(seconds: 2), () {
       // Navigate to the home page
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => NavPage()),
       );
     });
   }

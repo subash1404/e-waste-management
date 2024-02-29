@@ -2,6 +2,8 @@ import 'package:e_waste/pages/login.dart';
 import 'package:flutter/material.dart';
 
 class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
+
   @override
   State<SignupPage> createState() {
     return _SignupPageState();
@@ -56,15 +58,25 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 100),
+        padding:
+            const EdgeInsets.only(left: 30, right: 30, top: 60, bottom: 20),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const Text(
-                "Welcome to Pick-E",
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 32),
+              Row(
+                children: [
+                  const Text(
+                    "Welcome to",
+                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 32),
+                  ),
+                  Image.asset(
+                    'assets/images/logo.png',
+                    height: 80,
+                    width: 180,
+                  )
+                ],
               ),
-              const SizedBox(height: 60),
+              const SizedBox(height: 40),
               Form(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,9 +239,19 @@ class _SignupPageState extends State<SignupPage> {
                               color: const Color.fromARGB(167, 4, 77, 6))),
                       child: ElevatedButton(
                         onPressed: () {},
-                        child: const Text(
-                          "Continue with Google",
-                          style: TextStyle(fontSize: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/google.jpg',
+                              height: 30,
+                              width: 80,
+                            ),
+                            const Text(
+                              "Continue with Google",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
                         ),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(

@@ -1,4 +1,7 @@
+import 'package:e_waste/pages/home.dart';
+import 'package:e_waste/pages/nav.dart';
 import 'package:e_waste/pages/login.dart';
+import 'package:e_waste/pages/pickup.dart';
 import 'package:e_waste/pages/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -26,7 +29,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: theme,
-      home: LoginPage(),
+      home: PickupPage(),
     );
   }
 }

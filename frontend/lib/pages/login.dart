@@ -57,22 +57,34 @@ class _LoginPageState extends State<LoginPage> {
       body: Align(
         alignment: Alignment.center,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 100),
+          padding:
+              const EdgeInsets.only(left: 30, right: 30, top: 0, bottom: 20),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const Text(
-                  "Login to Pick - E",
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 32),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Login to",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
+                    ),
+                    Image.asset(
+                      'assets/images/logo.png',
+                      height: 150,
+                      width: 150,
+                    )
+                  ],
                 ),
-                SizedBox(
-                  height: 12,
-                ),
-                const Text(
-                  "We\'re happy to see you back again",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 32),
+                // SizedBox(
+                //   height: 12,
+                // ),
+                // const Text(
+                //   "We\'re happy to see you back again",
+                //   style: TextStyle(fontSize: 16),
+                // ),
+
                 Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,10 +243,6 @@ class _LoginPageState extends State<LoginPage> {
                                 color: const Color.fromARGB(167, 4, 77, 6))),
                         child: ElevatedButton(
                           onPressed: () {},
-                          child: const Text(
-                            "Continue with Google",
-                            style: TextStyle(fontSize: 16),
-                          ),
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -245,6 +253,19 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 15),
                             minimumSize: const Size(double.infinity, 0),
+                          ),
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                'assets/images/google.jpg',
+                                height: 30,
+                                width: 80,
+                              ),
+                              const Text(
+                                "Continue with Google",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
                           ),
                         ),
                       ),
