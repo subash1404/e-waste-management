@@ -1,4 +1,6 @@
+import 'package:e_waste/models/info_item.dart';
 import 'package:e_waste/pages/home.dart';
+import 'package:e_waste/pages/info.dart';
 import 'package:e_waste/pages/nav.dart';
 import 'package:e_waste/pages/login.dart';
 import 'package:e_waste/pages/pickup.dart';
@@ -29,7 +31,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: theme,
-      home: PickupPage(),
+      home: NavPage(),
     );
   }
 }

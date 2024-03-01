@@ -123,6 +123,9 @@ class _PickupPageState extends State<PickupPage> {
                 "List of Products",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
+              SizedBox(
+                height: 4,
+              ),
               Container(
                 height: 56,
                 decoration: BoxDecoration(

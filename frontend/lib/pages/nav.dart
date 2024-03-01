@@ -1,3 +1,4 @@
+import 'package:e_waste/pages/info.dart';
 import 'package:flutter/material.dart';
 import 'package:e_waste/pages/login.dart';
 import 'package:e_waste/pages/signup.dart';
@@ -64,12 +65,30 @@ class _NavPageState extends State<NavPage> {
     );
   }
 
+  List<Map<String, String>> infoItems = [
+    {'image': 'assets/images/fridge.png', 'title': 'Title 1'},
+    {'image': 'assets/images/tv.png', 'title': 'Title 2'},
+    {'image': 'assets/images/camera.png', 'title': 'Title 3'},
+    {'image': 'assets/images/pc.png', 'title': 'Title 4'},
+    {'image': 'assets/images/fridge.png', 'title': 'Title 1'},
+    {'image': 'assets/images/tv.png', 'title': 'Title 2'},
+    {'image': 'assets/images/camera.png', 'title': 'Title 3'},
+    {'image': 'assets/images/pc.png', 'title': 'Title 4'},
+    {'image': 'assets/images/fridge.png', 'title': 'Title 1'},
+    {'image': 'assets/images/tv.png', 'title': 'Title 2'},
+    {'image': 'assets/images/camera.png', 'title': 'Title 3'},
+    {'image': 'assets/images/pc.png', 'title': 'Title 4'},
+    // Add more items as needed
+  ];
+
   Widget _getBody() {
     switch (_tabIndex) {
       case 0:
         return LoginPage();
       case 1:
-        return SignupPage();
+        return InfoItemList(
+          items: infoItems,
+        );
       case 2:
         return SplashPage();
       case 3:
