@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart'; // Import QrImage package
 
-class Request extends StatelessWidget {
+class Request extends StatefulWidget {
   const Request({
-    required this.orderId,
     required this.title,
     required this.weight,
     required this.status,
@@ -10,110 +10,123 @@ class Request extends StatelessWidget {
   }) : super(key: key);
 
   final String title;
-  final int orderId;
   final int weight;
   final String status;
+
+  @override
+  _RequestState createState() => _RequestState();
+}
+
+class _RequestState extends State<Request> {
+  late String _qrData;
+
+  @override
+  void initState() {
+    super.initState();
+    _generateQRData();
+  }
+
+  void _generateQRData() {
+    // Generate QR data with product and weight information
+    _qrData = 'Product: ${widget.title}, Weight: ${widget.weight} Kg';
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: Container(
             width: MediaQuery.of(context).size.width - 16,
+            // ignore: sort_child_properties_last
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 16),
               child: Row(
                 children: [
-                  // SizedBox(width: 24),
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      image: DecorationImage(
+                        image: widget.status == "closed"
+                            ? AssetImage('assets/images/ok.png')
+                            : AssetImage('assets/images/pending.png'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          title,
+                          widget.title,
                           style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                          overflow:
-                              TextOverflow.ellipsis, // Allow text overflow
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(
-                          height: 2,
-                        ),
+                        const SizedBox(height: 2),
                         Text(
-                          weight.toString() + " Kg",
+                          '${widget.weight} Kg',
                           style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(
-                          height: 2,
-                        ),
-                        Text(
-                          "Status: " + status,
-                          style: const TextStyle(fontSize: 16),
+                              fontSize: 14, fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(
-                    width: status == "open" ? 40 : 32,
+                  const SizedBox(width: 16),
+                  IconButton(
+                    icon: Icon(Icons.qr_code),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            backgroundColor: Colors.green.shade200,
+                            child: Container(
+                              padding: const EdgeInsets.all(30),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    'QR for ' + widget.title,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Center(
+                                    child: Container(
+                                      child: QrImageView(
+                                        data: _qrData,
+                                        version: QrVersions.auto,
+                                        size: 230,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
                   ),
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: status == "closed"
-                                  ? Colors.green
-                                  : Colors.red,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 35, vertical: 12),
-                            child: Text(
-                              "ID: " + orderId.toString(),
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Container(
-                        child: ElevatedButton.icon(
-                            onPressed: () {},
-                            icon: Image.asset(
-                              'assets/images/gmaps.png',
-                              height: 30,
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFE0F0DE),
-                                side: BorderSide(color: Colors.green, width: 2),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16)),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 12)),
-                            label: const Text(
-                              "Maps",
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20),
-                            )),
-                      )
-                    ],
-                  )
                 ],
               ),
             ),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
         ),
-        Container(
-          height: 0.5,
-          color: const Color.fromARGB(255, 64, 64, 64),
-        )
       ],
     );
   }

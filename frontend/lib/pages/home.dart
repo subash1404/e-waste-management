@@ -25,30 +25,16 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: 8,
           ),
-          Request(
-              orderId: 12, status: "closed", title: "Product 1", weight: 12),
-          Request(
-              orderId: 12, status: "closed", title: "Product 1", weight: 12),
-          Request(
-              orderId: 12,
-              status: "closed",
-              title: "Prodsdfdfuct 1",
-              weight: 12),
-          Request(orderId: 12, status: "open", title: "Product 1", weight: 12),
-          Request(
-              orderId: 12, status: "closed", title: "Product 1", weight: 12),
-          Request(
-              orderId: 12, status: "closed", title: "Product 1", weight: 12),
-          Request(
-              orderId: 12, status: "closed", title: "Product 1", weight: 12),
-          Request(
-              orderId: 12,
-              status: "closed",
-              title: "Prodsdfdfuct 1",
-              weight: 12),
-          Request(orderId: 12, status: "open", title: "Product 1", weight: 12),
-          Request(
-              orderId: 12, status: "closed", title: "Product 1", weight: 12),
+          Request(status: "closed", title: "Product 1", weight: 12),
+          Request(status: "closed", title: "Product 1", weight: 12),
+          Request(status: "closed", title: "Prodsdfdfuct 1", weight: 12),
+          Request(status: "open", title: "Product 1", weight: 12),
+          Request(status: "closed", title: "Product 1", weight: 12),
+          Request(status: "closed", title: "Product 1", weight: 12),
+          Request(status: "closed", title: "Product 1", weight: 12),
+          Request(status: "closed", title: "Prodsdfdfuct 1", weight: 12),
+          Request(status: "open", title: "Product 1", weight: 12),
+          Request(status: "closed", title: "Product 1", weight: 12),
         ]),
       ),
     );

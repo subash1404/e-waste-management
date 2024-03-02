@@ -1,4 +1,6 @@
+import 'package:e_waste/pages/home.dart';
 import 'package:e_waste/pages/info.dart';
+import 'package:e_waste/pages/pickup.dart';
 import 'package:flutter/material.dart';
 import 'package:e_waste/pages/login.dart';
 import 'package:e_waste/pages/signup.dart';
@@ -17,7 +19,7 @@ class _NavPageState extends State<NavPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green.shade900,
+      // backgroundColor: Colors.green.shade900,
       body: _getBody(),
       bottomNavigationBar: Container(
         color: Colors.green.shade800,
@@ -33,22 +35,23 @@ class _NavPageState extends State<NavPage> {
           items: [
             _buildBottomNavItem(Icons.home, "Home"),
             _buildBottomNavItem(Icons.add_location, "Location"),
-            _buildBottomNavItem(Icons.shop, "Shop"),
-            _buildBottomNavItem(Icons.settings, "Setting"),
+            _buildBottomNavItem(Icons.add_circle_outline_rounded, "Add"),
+            _buildBottomNavItem(Icons.info, "Information"),
+            _buildBottomNavItem(Icons.person_sharp, "Profile"),
           ],
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 0.0),
-        child: FloatingActionButton(
-          backgroundColor: Colors.green.shade800,
-          shape: CircleBorder(),
-          onPressed: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => SignupPage())),
-          child: const Icon(Icons.add, color: Colors.white),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: Padding(
+      //   padding: const EdgeInsets.only(bottom: 0.0),
+      //   child: FloatingActionButton(
+      //     backgroundColor: Colors.green.shade800,
+      //     shape: CircleBorder(),
+      //     onPressed: () => Navigator.of(context)
+      //         .push(MaterialPageRoute(builder: (context) => SignupPage())),
+      //     child: const Icon(Icons.add, color: Colors.white),
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -84,17 +87,17 @@ class _NavPageState extends State<NavPage> {
   Widget _getBody() {
     switch (_tabIndex) {
       case 0:
-        return LoginPage();
+        return HomePage();
       case 1:
+        return SplashPage();
+      case 2:
+        return PickupPage();
+      case 3:
         return InfoItemList(
           items: infoItems,
         );
-      case 2:
-        return SplashPage();
-      case 3:
-        return LoginPage();
       case 4:
-        return SignupPage();
+        return Placeholder();
       default:
         return LoginPage();
     }
