@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'package:e_waste/pages/login.dart';
 import 'package:e_waste/pages/signup.dart';
+import 'package:e_waste/utlis/shared_preferences_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'nav.dart';
 import 'package:flutter/material.dart'; // Import for Timer
@@ -13,16 +16,34 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  SharedPreferences? prefs = SharedPreferencesManager.preferences;
+
+  void initPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    if (prefs != null) {
+      checkToken();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Unable to load Shared preferences")));
+    }
+  }
+
+  void checkToken() {
+    String? token = prefs?.getString("token");
+
+    if (token == null) {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginPage()));
+      return;
+    }
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => NavPage()));
+  }
+
   @override
   void initState() {
     super.initState();
-    // Start a timer to navigate to the home page after 2 seconds
-    Timer(Duration(seconds: 2), () {
-      // Navigate to the home page
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => SignupPage()),
-      );
-    });
+    initPreferences();
   }
 
   @override

@@ -89,7 +89,7 @@ class _NavPageState extends State<NavPage> {
   Widget _getBody() {
     switch (_tabIndex) {
       case 0:
-        return HomePage();
+        return const HomePage();
       case 1:
         return MapPage();
       case 2:

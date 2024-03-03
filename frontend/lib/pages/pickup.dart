@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'package:e_waste/pages/nav.dart';
+import 'package:e_waste/utlis/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PickupPage extends StatefulWidget {
   const PickupPage({Key? key}) : super(key: key);
@@ -13,12 +17,11 @@ class PickupPage extends StatefulWidget {
 class _PickupPageState extends State<PickupPage> {
   final FocusNode _productNameFocusNode = FocusNode();
   final FocusNode _weightFocusNode = FocusNode();
-  final FocusNode _descriptionFocusNode = FocusNode();
   final FocusNode _locationFocusNode = FocusNode();
   final TextEditingController _productNameController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
+  SharedPreferences? prefs = SharedPreferencesManager.preferences;
 
   final List<String> predefinedItems = [
     'Item 1',
@@ -27,24 +30,50 @@ class _PickupPageState extends State<PickupPage> {
     // Add more items as needed
   ];
 
-  List<String> selectedItems = [];
+  void sendReq() async {
+    print(selectedItems);
+    var userId = prefs?.getString('userId');
+    try {
+      var response = await http.post(
+          Uri.parse("http://192.168.43.46:3000/request/postRequest"),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode({
+            "title": _productNameController.text,
+            "weight": _weightController.text,
+            "lat": "72.12",
+            "long": "72.12",
+            "products": selectedItems,
+            "userId": userId
+          }));
+      var responseData = jsonDecode(response.body);
+      if (response.statusCode > 399) {
+        throw "Unable to send request";
+      }
+      // Navigator.of(context).pop();
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => NavPage()));
+    } catch (err) {
+      print(err);
+      throw "Something went wrong";
+    }
+  }
+
+  List<Map<String, dynamic>> selectedItems = [];
   bool selectingItems = true;
 
   @override
   void dispose() {
     _productNameFocusNode.dispose();
     _weightFocusNode.dispose();
-    _descriptionFocusNode.dispose();
     _locationFocusNode.dispose();
     _productNameController.dispose();
     _weightController.dispose();
-    _descriptionController.dispose();
     _locationController.dispose();
     super.dispose();
   }
 
   void _showMultiSelect() async {
-    final List<String> results = await showDialog(
+    final List<Map<String, dynamic>> results = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return MultiSelect(items: predefinedItems);
@@ -142,7 +171,9 @@ class _PickupPageState extends State<PickupPage> {
                         child: Text(
                           selectingItems
                               ? "Select Items"
-                              : selectedItems.join(", "),
+                              : selectedItems
+                                  .map((item) => item["product"])
+                                  .join(", "),
                           style: TextStyle(
                             color: selectingItems ? Colors.grey : Colors.black,
                           ),
@@ -182,9 +213,7 @@ class _PickupPageState extends State<PickupPage> {
               ),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () {
-                  // Submit action
-                },
+                onPressed: sendReq,
                 child: const Text(
                   "Submit",
                   style: TextStyle(fontSize: 16),
@@ -216,14 +245,15 @@ class MultiSelect extends StatefulWidget {
 }
 
 class _MultiSelectState extends State<MultiSelect> {
-  final List<String> _selectedItems = [];
+  final List<Map<String, dynamic>> _selectedItems = [];
 
   void _itemChange(String itemValue, bool isSelected) {
     setState(() {
       if (isSelected) {
-        _selectedItems.add(itemValue);
+        _selectedItems.add({"product": itemValue});
       } else {
-        _selectedItems.remove(itemValue);
+        _selectedItems
+            .removeWhere((element) => element["product"] == itemValue);
       }
     });
   }
@@ -245,7 +275,8 @@ class _MultiSelectState extends State<MultiSelect> {
           children: widget.items
               .map(
                 (item) => CheckboxListTile(
-                  value: _selectedItems.contains(item),
+                  value: _selectedItems
+                      .any((element) => element["product"] == item),
                   title: Text(item),
                   controlAffinity: ListTileControlAffinity.leading,
                   onChanged: (isChecked) => _itemChange(item, isChecked!),

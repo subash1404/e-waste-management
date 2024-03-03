@@ -1,4 +1,4 @@
-import 'package:e_waste/models/info_item.dart';
+import 'package:e_waste/widgets/info_item.dart';
 import 'package:e_waste/pages/home.dart';
 import 'package:e_waste/pages/info.dart';
 import 'package:e_waste/pages/map.dart';
@@ -6,6 +6,7 @@ import 'package:e_waste/pages/nav.dart';
 import 'package:e_waste/pages/login.dart';
 import 'package:e_waste/pages/pickup.dart';
 import 'package:e_waste/pages/signup.dart';
+import 'package:e_waste/utlis/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,8 +20,8 @@ final theme = ThemeData(
 );
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await SharedPreferencesManager.init();
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferencesManager.init();
   // await dotenv.load();
   runApp(const App());
 }

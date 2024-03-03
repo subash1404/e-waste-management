@@ -21,7 +21,7 @@ router.post('/postRequest',async (req,res) => {
 
 router.get('/getRequest',async (req,res) => {
     try{
-        const {userId}  = req.body;
+        const {userId}  = req.query;
         const requests = await Request.find({userId:userId});
         res.json(requests);
     }catch(err){

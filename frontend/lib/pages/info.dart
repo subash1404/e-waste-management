@@ -1,4 +1,4 @@
-import 'package:e_waste/models/info_item.dart';
+import 'package:e_waste/widgets/info_item.dart';
 import 'package:flutter/material.dart';
 
 class InfoItemList extends StatefulWidget {

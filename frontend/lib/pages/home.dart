@@ -1,7 +1,15 @@
-import 'package:e_waste/models/request.dart';
+import 'dart:convert';
+
+import 'package:e_waste/models/product.dart';
+import 'package:e_waste/utlis/shared_preferences_manager.dart';
+import 'package:e_waste/widgets/request.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() {
     return _HomePageState();
@@ -9,33 +17,67 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  SharedPreferences? prefs = SharedPreferencesManager.preferences;
+  late List<Product> products = [];
+
+  Future<void> getProductsFromDB() async {
+    var userId = prefs?.getString("userId");
+    if (userId == null) {
+      throw "Login First";
+    }
+    try {
+      var resoponse = await http.get(
+        Uri.parse(
+            "http://192.168.43.46:3000/request/getRequest?userId=${userId}"),
+        headers: {"Content-Type": "application/json"},
+      );
+      var responseData = jsonDecode(resoponse.body);
+      List<Product> updatedProducts = [];
+      for (var product in responseData) {
+        updatedProducts.add(Product(
+            title: product["title"],
+            weight: product["weight"],
+            status: product["status"]));
+      }
+      setState(() {
+        products = updatedProducts;
+      });
+    } catch (err) {
+      throw "Something went wrong";
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getProductsFromDB();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFE0F0DE),
-
-      // backgroundColor: Color.fromARGB(255, 226, 241, 222),
       appBar: AppBar(
         title: const Text("Recents"),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
       ),
-      body: const SingleChildScrollView(
-        child: Column(children: [
-          SizedBox(
-            height: 8,
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: products.length,
+              itemBuilder: ((context, index) {
+                final product = products[index];
+                return Request(
+                  title: product.title,
+                  weight: product.weight,
+                  status: product.status,
+                );
+              }),
+            ),
           ),
-          Request(status: "closed", title: "Product 1", weight: 12),
-          Request(status: "closed", title: "Product 1", weight: 12),
-          Request(status: "closed", title: "Prodsdfdfuct 1", weight: 12),
-          Request(status: "open", title: "Product 1", weight: 12),
-          Request(status: "closed", title: "Product 1", weight: 12),
-          Request(status: "closed", title: "Product 1", weight: 12),
-          Request(status: "closed", title: "Product 1", weight: 12),
-          Request(status: "closed", title: "Prodsdfdfuct 1", weight: 12),
-          Request(status: "open", title: "Product 1", weight: 12),
-          Request(status: "closed", title: "Product 1", weight: 12),
-        ]),
+        ],
       ),
     );
   }

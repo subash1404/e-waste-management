@@ -23,6 +23,11 @@ const requestSchema = new schema({
   long:{
     type:String,
   },
+  status:{
+    type:String,
+    required:true,
+    default:"Pending"
+  },
   userId: {
     type: schema.Types.ObjectId,
     required:true,
