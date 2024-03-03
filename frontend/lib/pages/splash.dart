@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:e_waste/pages/signup.dart';
+
 import 'nav.dart';
 import 'package:flutter/material.dart'; // Import for Timer
 
@@ -18,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
     Timer(Duration(seconds: 2), () {
       // Navigate to the home page
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => NavPage()),
+        MaterialPageRoute(builder: (context) => SignupPage()),
       );
     });
   }

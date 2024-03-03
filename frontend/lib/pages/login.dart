@@ -1,5 +1,12 @@
+import 'dart:convert';
+
+import 'package:e_waste/pages/home.dart';
+import 'package:e_waste/pages/nav.dart';
 import 'package:e_waste/pages/signup.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:e_waste/utlis/shared_preferences_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,7 +25,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
-
+  final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
+  SharedPreferences? prefs = SharedPreferencesManager.preferences;
   @override
   void initState() {
     super.initState();
@@ -41,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _isEmailLabelVisible = true;
   bool _isPassLabelVisible = true;
   bool _isChecked = false;
+  bool isLoading = false;
 
   void _updateLabelVisibility() {
     setState(() {
@@ -49,6 +58,49 @@ class _LoginPageState extends State<LoginPage> {
       _isPassLabelVisible =
           !_passFocusNode.hasFocus && _passController.text.isEmpty;
     });
+  }
+
+  void login() async {
+    if (!_loginFormKey.currentState!.validate()) {
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      var response = await http.post(
+          Uri.parse("http://192.168.43.46:3000/user/login"),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode({
+            "email": _emailController.text,
+            "password": _passController.text
+          }));
+
+      var responseData = jsonDecode(response.body);
+      if (response.statusCode > 399) {
+        throw responseData["message"];
+      }
+
+      await prefs?.setString("email", responseData["email"]);
+      await prefs?.setString("token", responseData["token"]);
+      await prefs?.setString("userId", responseData["userId"]);
+      await prefs?.setString("username", responseData["username"]);
+
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => NavPage()));
+    } catch (err) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(err.toString())));
+    }
   }
 
   @override
@@ -86,6 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                 // ),
 
                 Form(
+                  key: _loginFormKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -105,6 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         onChanged: (_) => _updateLabelVisibility(),
                         decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8),
                           labelText:
                               _isEmailLabelVisible ? "  Enter email" : "",
                           // prefixIcon: Icon(Icons.email),
@@ -141,6 +195,8 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         onChanged: (_) => _updateLabelVisibility(),
                         decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8),
+
                           labelText:
                               _isPassLabelVisible ? "  Enter password" : "",
                           // prefixIcon: Icon(Icons.lock),
@@ -188,18 +244,22 @@ class _LoginPageState extends State<LoginPage> {
                         height: 24,
                       ),
                       ElevatedButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "Sign In",
-                          style: TextStyle(fontSize: 16),
-                        ),
+                        onPressed: isLoading ? () {} : login,
+                        child: isLoading
+                            ? CircularProgressIndicator(
+                                color: Colors.green.shade200,
+                              )
+                            : const Text(
+                                "Sign In",
+                                style: TextStyle(fontSize: 16),
+                              ),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
                           backgroundColor: const Color.fromARGB(167, 4, 77, 6),
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
+                              horizontal: 16, vertical: 12),
                           minimumSize: const Size(double.infinity, 0),
                         ),
                       ),
@@ -251,7 +311,7 @@ class _LoginPageState extends State<LoginPage> {
                                 const Color.fromARGB(167, 4, 77, 6),
                             backgroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 15),
+                                horizontal: 16, vertical: 12),
                             minimumSize: const Size(double.infinity, 0),
                           ),
                           child: Row(
