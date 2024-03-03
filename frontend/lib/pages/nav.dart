@@ -1,6 +1,8 @@
 import 'package:e_waste/pages/home.dart';
 import 'package:e_waste/pages/info.dart';
+import 'package:e_waste/pages/map.dart';
 import 'package:e_waste/pages/pickup.dart';
+import 'package:e_waste/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:e_waste/pages/login.dart';
 import 'package:e_waste/pages/signup.dart';
@@ -89,7 +91,7 @@ class _NavPageState extends State<NavPage> {
       case 0:
         return HomePage();
       case 1:
-        return SplashPage();
+        return MapPage();
       case 2:
         return PickupPage();
       case 3:
@@ -97,7 +99,7 @@ class _NavPageState extends State<NavPage> {
           items: infoItems,
         );
       case 4:
-        return Placeholder();
+        return ProfilePage();
       default:
         return LoginPage();
     }
