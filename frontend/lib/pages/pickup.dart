@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:e_waste/pages/nav.dart';
 import 'package:e_waste/utlis/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,6 +28,15 @@ class _PickupPageState extends State<PickupPage> {
     'Item 1',
     'Item 2',
     'Item 3',
+    'Item 4',
+    'Item 2',
+    'Item 3',
+    'Item 1',
+    'Item 2',
+    'Item 3',
+    'Item 1',
+    'Item 2',
+    'Item 3',
     // Add more items as needed
   ];
 
@@ -35,7 +45,8 @@ class _PickupPageState extends State<PickupPage> {
     var userId = prefs?.getString('userId');
     try {
       var response = await http.post(
-          Uri.parse("http://192.168.43.46:3000/request/postRequest"),
+          Uri.parse(
+              "http://${dotenv.env["BACKEND_BASE_API"]}/request/postRequest"),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode({
             "title": _productNameController.text,
@@ -50,8 +61,8 @@ class _PickupPageState extends State<PickupPage> {
         throw "Unable to send request";
       }
       // Navigator.of(context).pop();
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (context) => NavPage()));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const NavPage()));
     } catch (err) {
       print(err);
       throw "Something went wrong";
@@ -152,7 +163,7 @@ class _PickupPageState extends State<PickupPage> {
                 "List of Products",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 4,
               ),
               Container(
@@ -183,7 +194,10 @@ class _PickupPageState extends State<PickupPage> {
                     if (selectingItems)
                       IconButton(
                         onPressed: _showMultiSelect,
-                        icon: Icon(Icons.arrow_drop_down),
+                        icon: const Icon(
+                          Icons.add,
+                          size: 25,
+                        ),
                       ),
                   ],
                 ),
@@ -269,28 +283,49 @@ class _MultiSelectState extends State<MultiSelect> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: const Color.fromARGB(255, 230, 255, 230),
       title: const Text('Select Items'),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: widget.items
-              .map(
-                (item) => CheckboxListTile(
-                  value: _selectedItems
-                      .any((element) => element["product"] == item),
-                  title: Text(item),
-                  controlAffinity: ListTileControlAffinity.leading,
-                  onChanged: (isChecked) => _itemChange(item, isChecked!),
-                ),
-              )
-              .toList(),
+      content: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.25, // Set a fixed height
+        child: SingleChildScrollView(
+          // Wrap content in SingleChildScrollView
+          child: ListBody(
+            children: widget.items
+                .map(
+                  (item) => Container(
+                    padding: EdgeInsets.zero,
+                    child: CheckboxListTile(
+                      contentPadding: EdgeInsets.zero,
+                      value: _selectedItems
+                          .any((element) => element["product"] == item),
+                      title: Text(
+                        item,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      onChanged: (isChecked) => _itemChange(item, isChecked!),
+                      activeColor: Colors.green,
+                      checkColor: Colors.white,
+                      tileColor: Colors.transparent,
+                      dense: true,
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
         ),
       ),
       actions: [
         TextButton(
+          style: TextButton.styleFrom(
+              foregroundColor: Color.fromARGB(255, 181, 22, 22)),
           onPressed: _cancel,
           child: const Text('Cancel'),
         ),
         ElevatedButton(
+          style: TextButton.styleFrom(
+              backgroundColor: Colors.green.shade100,
+              foregroundColor: Colors.green.shade800),
           onPressed: _submit,
           child: const Text('Ok'),
         ),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:e_waste/pages/login.dart';
 import 'package:e_waste/utlis/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -70,14 +71,14 @@ class _SignupPageState extends State<SignupPage> {
     });
 
     try {
-      var response =
-          await http.post(Uri.parse("http://192.168.43.46:3000/user/register"),
-              headers: {"Content-Type": "application/json"},
-              body: jsonEncode({
-                "email": _emailController.text,
-                "password": _passController.text,
-                "username": _usernameController.text
-              }));
+      var response = await http.post(
+          Uri.parse("http://${dotenv.env["BACKEND_BASE_API"]}/user/register"),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode({
+            "email": _emailController.text,
+            "password": _passController.text,
+            "username": _usernameController.text
+          }));
 
       var responseData = jsonDecode(response.body);
       if (response.statusCode > 399) {

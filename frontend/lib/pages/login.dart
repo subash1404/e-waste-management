@@ -4,6 +4,7 @@ import 'package:e_waste/pages/home.dart';
 import 'package:e_waste/pages/nav.dart';
 import 'package:e_waste/pages/signup.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:e_waste/utlis/shared_preferences_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -71,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       var response = await http.post(
-          Uri.parse("http://192.168.43.46:3000/user/login"),
+          Uri.parse("http:${dotenv.env["BACKEND_BASE_API"]}/user/login"),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode({
             "email": _emailController.text,

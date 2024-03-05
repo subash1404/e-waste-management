@@ -25,15 +25,19 @@ class _NavPageState extends State<NavPage> {
       body: _getBody(),
       bottomNavigationBar: Container(
         color: Colors.green.shade800,
+        padding: EdgeInsets.only(right: 4, left: 4, top: 4, bottom: 0),
         child: BottomNavigationBar(
-          backgroundColor: Colors.transparent,
+          // backgroundColor: Color.fromARGB(255, 246, 255, 227),
+          backgroundColor: Colors.green.shade800,
           elevation: 0,
           type: BottomNavigationBarType.fixed,
           selectedFontSize: 12,
           currentIndex: _tabIndex,
           onTap: _changeTabIndex,
-          selectedItemColor: Colors.white, // Set selected item color to white
-          unselectedItemColor: Colors.grey.shade300,
+          selectedItemColor: Colors.yellow, // Set selected item color to white
+          unselectedItemColor: Colors.white,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
           items: [
             _buildBottomNavItem(Icons.home, "Home"),
             _buildBottomNavItem(Icons.add_location, "Location"),
@@ -43,6 +47,7 @@ class _NavPageState extends State<NavPage> {
           ],
         ),
       ),
+
       // floatingActionButton: Padding(
       //   padding: const EdgeInsets.only(bottom: 0.0),
       //   child: FloatingActionButton(
@@ -63,9 +68,14 @@ class _NavPageState extends State<NavPage> {
     });
   }
 
-  BottomNavigationBarItem _buildBottomNavItem(IconData icon, String label) {
+  BottomNavigationBarItem _buildBottomNavItem(
+    IconData icon,
+    String label,
+  ) {
     return BottomNavigationBarItem(
-      icon: Icon(icon),
+      icon: Icon(
+        icon,
+      ), // Set the color of the icon to the active color
       label: label,
     );
   }

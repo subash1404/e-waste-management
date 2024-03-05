@@ -22,7 +22,7 @@ final theme = ThemeData(
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesManager.init();
-  // await dotenv.load();
+  await dotenv.load();
   runApp(const App());
 }
 

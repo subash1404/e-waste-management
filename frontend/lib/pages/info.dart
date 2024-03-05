@@ -35,60 +35,65 @@ class _InfoItemListState extends State<InfoItemList> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green.shade800,
-        title: Text("Recyclable items"),
+        title: const Text("Recyclable items"),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 7.0),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                ),
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10)),
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
-                    hintText: 'Search by title...',
-                    border: InputBorder.none,
-                    hintStyle: TextStyle(
-                      color: const Color.fromARGB(137, 26, 26, 26),
-                    ),
-                  ),
-                  style: TextStyle(color: Colors.black),
+                      hintText: 'Search by title...',
+                      border: InputBorder.none,
+                      hintStyle: const TextStyle(
+                        color: Color.fromARGB(137, 26, 26, 26),
+                      ),
+                      suffixIcon: Icon(
+                        Icons.search_rounded,
+                        color: Colors.green.shade900,
+                      )),
+                  style: const TextStyle(color: Colors.black),
                 ),
               ),
               GestureDetector(
-                onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => Placeholder())),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const Placeholder())),
                 child: GridView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
                   ),
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   itemCount: filteredItems.length,
                   itemBuilder: (context, index) {
                     return Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
+                          // border: Border.all(color: Colors.grey),
+                          // borderRadius: BorderRadius.circular(8),
+                          // boxShadow: const [
+                          //   BoxShadow(
+                          //     blurStyle: BlurStyle.inner,
+                          //     color: Colors.blueGrey,
+                          //     spreadRadius: 2,
+                          //     blurRadius: 2,
+                          //     offset: Offset(-2, 2),
+                          //   ),
+                          // ],
                           ),
-                        ],
-                      ),
                       child: InfoItem(
                         image: filteredItems[index]['image'] ?? '',
                         title: filteredItems[index]['title'] ?? '',
