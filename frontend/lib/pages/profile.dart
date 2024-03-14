@@ -1,222 +1,159 @@
+import 'package:e_waste/pages/login.dart';
+import 'package:e_waste/utlis/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage();
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({Key? key});
 
-  @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-var size, height, width;
-
-class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    size = MediaQuery.of(context).size;
-    height = size.height;
-    width = size.width;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFFF2EBD1),
-        title: Text(
-          "Profile",
-          style: TextStyle(
-            color: Colors.black, // Text color
-            fontWeight: FontWeight.bold, // Bold text
-            fontSize: 20.0, // Font size
-          ),
-        ),
-        centerTitle: true, // Center the title
-      ),
-      backgroundColor: Color(0xFFF2EBD1),
-      body: Center(
-        child: Column(
+    SharedPreferences? prefs = SharedPreferencesManager.preferences;
+    return MaterialApp(
+      home: Scaffold(
+        body: Column(
           children: [
-            SizedBox(
-              height: height * 0.01,
-            ),
-            CircleAvatar(
-              radius: 80,
-              backgroundColor: Color(0xFFF2EBD1),
-              backgroundImage: AssetImage('lib/image/hub.png'),
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Text(
-              "NAME",
-              style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.indigo.shade900),
-              textAlign: TextAlign.center,
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 10, 230, 5),
-              child: Text(
-                "Video preferences",
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.grey),
-                textAlign: TextAlign.left,
-              ),
-            ),
-            Container(
-              height: height * 0.05,
-              width: width * 0.86,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color(0xFF8F8144), // Border color
-                  width: 2.0, // Border width
+            // Stack with rounded image
+            Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height * 0.13),
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  color: Colors.green.shade800,
                 ),
-                borderRadius: BorderRadius.circular(12.0), // Border radius
-                color: Colors.transparent, // Container background color
+                Positioned(
+                  top: MediaQuery.of(context).size.height * 0.10,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Color.fromARGB(
+                            255, 209, 255, 238), // Set the color of the border
+                        width: 5.0, // Set the width of the border
+                      ),
+                    ),
+                    child: CircleAvatar(
+                      radius: MediaQuery.of(context).size.height * 0.10,
+                      backgroundColor: Colors.grey,
+                      backgroundImage:
+                          const AssetImage('assets/images/profile.jpg'),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            const Text(
+              "Bucket Fighter",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Phone",
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                  Text("+91 9789086071", style: TextStyle(fontSize: 18)),
+                ],
               ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 200, 5),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Email",
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                  Text("test@gmail.com", style: TextStyle(fontSize: 18)),
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Location",
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                  Text("kjff afdd", style: TextStyle(fontSize: 18)),
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Phone",
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                  Text("+91 9789086071", style: TextStyle(fontSize: 18)),
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Email",
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                  Text("test@gmail.com", style: TextStyle(fontSize: 18)),
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Location",
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                  Text("kjff afdd", style: TextStyle(fontSize: 18)),
+                ],
+              ),
+            ),
+            const Spacer(),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green.shade800,
+                    foregroundColor: Colors.yellow,
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 60)),
+                onPressed: () async {
+                  await prefs?.clear();
+                  // ignore: use_build_context_synchronously
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  );
+                },
                 child: Text(
-                  "NAME",
+                  "Logout",
                   style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-            ),
+                    fontSize: 20,
+                  ),
+                )),
             SizedBox(
-              height: height * 0.01,
-            ),
-            Container(
-              height: height * 0.05,
-              width: width * 0.86,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color(0xFF8F8144), // Border color
-                  width: 2.0, // Border width
-                ),
-                borderRadius: BorderRadius.circular(12.0), // Border radius
-                color: Colors.transparent, // Container background color
-              ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 200, 5),
-                child: Text(
-                  "NAME",
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 20, 230, 5),
-              child: Text(
-                "Account Settings",
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.grey),
-                textAlign: TextAlign.left,
-              ),
-            ),
-            Container(
-              height: height * 0.05,
-              width: width * 0.86,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color(0xFF8F8144), // Border color
-                  width: 2.0, // Border width
-                ),
-                borderRadius: BorderRadius.circular(12.0), // Border radius
-                color: Colors.transparent, // Container background color
-              ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 200, 5),
-                child: Text(
-                  "NAME",
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Container(
-              height: height * 0.05,
-              width: width * 0.86,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color(0xFF8F8144), // Border color
-                  width: 2.0, // Border width
-                ),
-                borderRadius: BorderRadius.circular(12.0), // Border radius
-                color: Colors.transparent, // Container background color
-              ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 200, 5),
-                child: Text(
-                  "NAME",
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Container(
-              height: height * 0.05,
-              width: width * 0.86,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color(0xFF8F8144), // Border color
-                  width: 2.0, // Border width
-                ),
-                borderRadius: BorderRadius.circular(12.0), // Border radius
-                color: Colors.transparent, // Container background color
-              ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 5, 200, 5),
-                child: Text(
-                  "NAME",
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Container(
-              height: height * 0.05,
-              width: width * 0.4,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0), // Border radius
-                color: Color(0xFF8F8144), // Container background color
-              ),
-              child: Center(
-                child: Text(
-                  "Sign Out",
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              height: 16,
             ),
           ],
         ),

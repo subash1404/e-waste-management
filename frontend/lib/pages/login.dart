@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       var response = await http.post(
-          Uri.parse("http:${dotenv.env["BACKEND_BASE_API"]}/user/login"),
+          Uri.parse("${dotenv.env["BACKEND_BASE_API"]}/user/login"),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode({
             "email": _emailController.text,

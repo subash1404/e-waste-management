@@ -72,7 +72,7 @@ class _SignupPageState extends State<SignupPage> {
 
     try {
       var response = await http.post(
-          Uri.parse("http://${dotenv.env["BACKEND_BASE_API"]}/user/register"),
+          Uri.parse("${dotenv.env["BACKEND_BASE_API"]}/user/register"),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode({
             "email": _emailController.text,

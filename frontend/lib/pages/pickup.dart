@@ -45,8 +45,7 @@ class _PickupPageState extends State<PickupPage> {
     var userId = prefs?.getString('userId');
     try {
       var response = await http.post(
-          Uri.parse(
-              "http://${dotenv.env["BACKEND_BASE_API"]}/request/postRequest"),
+          Uri.parse("${dotenv.env["BACKEND_BASE_API"]}/request/postRequest"),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode({
             "title": _productNameController.text,

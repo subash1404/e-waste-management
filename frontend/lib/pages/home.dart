@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
     try {
       var resoponse = await http.get(
         Uri.parse(
-            "http://${dotenv.env["BACKEND_BASE_API"]}/request/getRequest?userId=${userId}"),
+            "${dotenv.env["BACKEND_BASE_API"]}/request/getRequest?userId=${userId}"),
         headers: {"Content-Type": "application/json"},
       );
       var responseData = jsonDecode(resoponse.body);
